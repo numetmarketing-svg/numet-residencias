@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Numet para Residencias</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Numet atrae, califica y gestiona a las familias que buscan residencia, y les deriva solo visitas confirmadas. La residencia paga solo cuando ingresa un residente.">
+<meta property="og:title" content="Numet para Residencias de Adultos Mayores">
+<meta property="og:description" content="Familias calificadas, con la visita ya confirmada. Pague solo cuando ingresa un residente.">
+<meta property="og:image" content="assets/og-numet.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Layout: landing clara y espaciosa en los colores del logo (rosa → lavanda → azul), letra grande para lectores mayores; un recorrido vertical simple que termina en la calculadora y el formulario. */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --soft:#F7F5FA; --soft-2:#EFEBF5; --line:#E2DCEA;
+  --ink:#1D1A2B; --ink-2:#3F3A52; --muted:#625C75;
+  --pink:#C94F82; --pink-ink:#A8386A; --pink-tint:#FBEAF1;
+  --lav:#8A7CB8; --lav-tint:#F0ECF8;
+  --blue:#0A5EA6; --blue-ink:#084B85; --blue-tint:#E7F0FA;
+  --c-res:#1F6FB8; --c-num:#D0558A; --c-ads:#B8860B;
+  --good:#1B7A4B; --good-tint:#E6F4EC;
+  --grad:linear-gradient(90deg,#DA6C91 0%,#A582AC 50%,#6E93C9 100%);
+  --f-display:"Nunito","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --r:18px; --r-sm:12px;
+  --shadow:0 1px 2px rgba(29,26,43,.05),0 10px 30px rgba(29,26,43,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(84px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:19px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(36px,5.4vw,60px);font-weight:900;letter-spacing:-.02em}
+h2{font-size:clamp(30px,4vw,44px);font-weight:900;letter-spacing:-.015em}
+h3{font-size:22px;font-weight:800}
+p{margin:0}
+a{color:var(--blue)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:4px solid #6E93C9;outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--f-display);font-size:15px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink-ink)}
+.lead{font-size:21px;color:var(--ink-2);max-width:60ch}
+.muted{color:var(--muted)}
+.sec{padding-block:clamp(64px,9vw,110px)}
+.sec.tint{background:var(--soft)}
+.sec-head{display:grid;gap:16px;max-width:780px;margin-bottom:44px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 28px;border-radius:999px;font-family:var(--f-display);font-weight:800;font-size:19px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(10,94,166,.25)}
+.btn-primary:hover{background:var(--blue-ink)}
+.btn-pink{background:var(--pink);color:#fff;box-shadow:0 6px 18px rgba(201,79,130,.25)}
+.btn-pink:hover{background:var(--pink-ink)}
+.btn-line{background:#fff;border-color:var(--line);color:var(--ink)}
+.btn-line:hover{border-color:var(--lav)}
+.btn svg{width:22px;height:22px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#fff;z-index:31}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
+.top img{height:40px;width:auto;display:block}
+.top nav{display:flex;align-items:center;gap:6px}
+.top nav a{font-weight:700;font-size:17px;color:var(--ink-2);text-decoration:none;padding:10px 14px;border-radius:999px}
+.top nav a:hover{background:var(--soft)}
+.top nav a.btn{min-height:48px;font-size:17px;padding:0 20px;color:#fff}
+.top nav a.btn:hover{background:var(--pink-ink)}
+.bar{height:5px;background:var(--grad)}
+
+/* hero */
+.hero{padding-block:clamp(48px,7vw,84px) clamp(56px,8vw,96px);background:radial-gradient(900px 420px at 100% 0%,var(--blue-tint),transparent 70%),radial-gradient(700px 380px at 0% 100%,var(--pink-tint),transparent 70%)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.for{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 10px;border-radius:16px!important;margin-bottom:22px;padding:10px 18px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:17px;color:var(--ink-2)}
+.for strong{color:var(--blue-ink)}
+.hero .lead{margin-top:22px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.beds{background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:var(--shadow)}
+.beds-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.beds-top span{font-size:16px;color:var(--muted);font-weight:700}
+.occ{font-family:var(--f-display);font-weight:900;font-size:40px;color:var(--blue);font-variant-numeric:tabular-nums}
+.meter{height:12px;border-radius:999px;background:var(--soft-2);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;width:60%;background:var(--grad);border-radius:999px;transition:width .4s ease}
+.bed-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:20px}
+.bed{aspect-ratio:1.2;border-radius:10px;border:2px dashed #C9C1D9;display:grid;place-items:center;transition:background .45s,border-color .45s}
+.bed svg{width:60%;height:auto}
+.bed svg path{fill:none;stroke:#B4AACB;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bed.full{background:var(--lav-tint);border:2px solid var(--lav-tint)}
+.bed.full svg path{stroke:var(--lav)}
+.bed.new{background:var(--pink);border:2px solid var(--pink)}
+.bed.new svg path{stroke:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:18px;font-size:16px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:16px;height:16px;border-radius:4px;display:inline-block;flex:none}
+.linkbtn{background:none;border:0;padding:0;margin-top:14px;font-weight:700;font-size:16px;color:var(--blue);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+
+/* trust strip */
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:-36px;position:relative;z-index:2}
+.trust div{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;box-shadow:var(--shadow)}
+.ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--blue-tint)}
+.ic svg{width:28px;height:28px}
+.ic svg *{fill:none;stroke:var(--blue);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ic.pink{background:var(--pink-tint)}.ic.pink svg *{stroke:var(--pink-ink)}
+.ic.good{background:var(--good-tint)}.ic.good svg *{stroke:var(--good)}
+.trust strong{display:block;font-family:var(--f-display);font-size:19px;font-weight:800;line-height:1.25}
+.trust span{font-size:16px;color:var(--muted)}
+
+/* context */
+.ctx{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:stretch}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;min-width:0}
+.card h3{margin-bottom:6px}
+.src{font-size:15px;color:var(--muted);margin-top:12px}
+#popChart{width:100%;height:auto;display:block}
+#popChart text{font-family:var(--f-body)}
+.stack{display:grid;gap:18px}
+.big-n{font-family:var(--f-display);font-weight:900;font-size:clamp(44px,5vw,58px);line-height:1;color:var(--blue);font-variant-numeric:tabular-nums}
+.loss{background:var(--pink-tint);border:0}
+.loss .big-n{color:var(--pink-ink)}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;counter-reset:s}
+.steps li{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px 20px;display:grid;gap:12px;align-content:start;position:relative}
+.steps .num{font-family:var(--f-display);font-weight:900;font-size:15px;color:var(--pink-ink);letter-spacing:.06em}
+.steps h3{font-size:21px}
+.steps p{font-size:17px;color:var(--ink-2)}
+.steps .gain{font-size:16px;color:var(--good);font-weight:700;border-top:1px solid var(--line);padding-top:12px}
+
+/* funnel */
+.fun{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}
+.funnel{width:100%;height:auto;display:block}
+.funnel text{font-family:var(--f-body)}
+.who{display:grid;gap:16px}
+.who .card{padding:22px 24px;display:grid;grid-template-columns:18px 1fr;gap:4px 14px}
+.who .card i{width:18px;height:18px;border-radius:5px;margin-top:5px}
+.who .card p{grid-column:2;font-size:17px;color:var(--ink-2)}
+
+/* ficha */
+.recibe{display:grid;grid-template-columns:.95fr 1.05fr;gap:32px;align-items:start}
+.crit{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.crit li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px}
+.crit .ic{width:44px;height:44px;border-radius:12px}
+.crit .ic svg{width:24px;height:24px}
+.crit strong{font-size:18px}
+.crit span{display:block;font-size:16px;color:var(--muted)}
+.ficha{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.ficha-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 22px;background:var(--soft);border-bottom:1px solid var(--line)}
+.ficha-h b{font-family:var(--f-display);font-size:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--good-tint);color:var(--good)}
+.pill.demo{background:var(--pink-tint);color:var(--pink-ink)}
+.ficha dl{margin:0;padding:8px 22px 4px;display:grid;grid-template-columns:auto 1fr;gap:0 18px}
+.ficha dt,.ficha dd{padding:11px 0;border-bottom:1px solid var(--line);font-size:17px}
+.ficha dt{color:var(--muted)}
+.ficha dd{margin:0;font-weight:700}
+.ficha dl > :nth-last-child(-n+2){border-bottom:0}
+.visit{margin:8px 22px 22px;padding:16px 18px;border-radius:var(--r-sm);background:var(--blue-tint);font-size:18px;display:flex;gap:12px;align-items:center}
+.visit svg{width:28px;height:28px;flex:none}
+.visit svg *{fill:none;stroke:var(--blue);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* model */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.opt{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:28px;display:grid;gap:12px;align-content:start}
+.opt.ads{background:var(--soft);border-color:transparent}
+.opt .tag{font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+.opt .big{font-family:var(--f-display);font-weight:900;font-size:52px;line-height:1;letter-spacing:-.02em}
+.opt.a{border-color:var(--c-res)}.opt.a .tag,.opt.a .big{color:var(--c-res)}
+.opt.b{border-color:var(--c-num)}.opt.b .tag,.opt.b .big{color:var(--pink-ink)}
+.opt.ads .tag{color:#7A5A06}
+.opt p{color:var(--ink-2);font-size:17px}
+.opt ul{margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font-size:17px;color:var(--ink-2)}
+.note{margin-top:20px;font-size:17px;color:var(--muted);max-width:70ch}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--shadow);min-width:0}
+.field{padding-block:16px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.field:first-of-type{padding-top:6px}
+.field > label,.field > .lbl{font-weight:700;font-size:18px}
+.field small{font-size:15px;color:var(--muted);font-weight:400}
+.stepper{display:grid;grid-template-columns:56px 1fr 56px;gap:8px;align-items:center}
+.stepper button{height:56px;border-radius:14px;border:2px solid var(--line);background:#fff;font-size:28px;font-weight:700;line-height:1;cursor:pointer;color:var(--blue)}
+.stepper button:hover{border-color:var(--blue);background:var(--blue-tint)}
+.stepper input{height:56px;width:100%;min-width:0;text-align:center;border:2px solid var(--line);border-radius:14px;font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--soft)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{min-height:56px;border-radius:14px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:17px;cursor:pointer;padding:6px 10px;line-height:1.25}
+.seg button[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-tint);color:var(--blue-ink)}
+.assume{font-size:15px;color:var(--muted);margin-top:14px;display:grid;gap:4px}
+.res{display:grid;gap:18px;min-width:0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 18px;display:grid;gap:4px;min-width:0}
+.tile .k{font-size:15px;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px}
+.tile .k i{width:12px;height:12px;border-radius:3px;flex:none}
+.tile .v{font-family:var(--f-display);font-weight:900;font-size:clamp(24px,3vw,32px);white-space:nowrap;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tile.hl{background:var(--blue-tint);border-color:transparent}
+.tile.hl .v{color:var(--blue-ink)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cmp div{border-radius:var(--r-sm);padding:16px 18px;border:2px solid var(--line);background:#fff}
+.cmp div.on{border-color:var(--blue);background:var(--blue-tint)}
+.cmp b{display:block;font-family:var(--f-display);font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.cmp span{font-size:15px;color:var(--muted);font-weight:700}
+.chart-card h3{font-size:20px}
+.chart-card .sub{font-size:17px;color:var(--ink-2);margin-top:6px}
+.chart-box{position:relative;margin-top:14px}
+#lineChart{width:100%;height:auto;display:block;overflow:visible}
+#lineChart text{font-family:var(--f-body);font-size:13px;fill:var(--muted)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;padding:12px 14px;border-radius:10px;font-size:15px;line-height:1.5;min-width:230px;box-shadow:var(--shadow);font-variant-numeric:tabular-nums;z-index:3}
+.tip .r{display:flex;justify-content:space-between;gap:16px}
+.tip i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.split-bar{display:flex;height:40px;border-radius:8px;overflow:hidden;gap:2px;margin-top:12px;background:#fff}
+.split-bar div{height:100%;min-width:3px;transition:flex-grow .35s}
+details.tbl{margin-top:18px;font-size:17px}
+details.tbl summary{cursor:pointer;font-weight:700;color:var(--blue);min-height:44px;display:flex;align-items:center}
+.tbl-scroll{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:15px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:700}
+
+/* commit + start */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.grid4 .card{display:grid;gap:12px;align-content:start;padding:24px}
+.grid4 p{font-size:17px;color:var(--ink-2)}
+.start{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:st}
+.start li{position:relative;padding-top:62px}
+.start li::before{counter-increment:st;content:counter(st);position:absolute;top:0;left:0;width:46px;height:46px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:21px}
+.start li::after{content:"";position:absolute;top:22px;left:56px;right:-8px;height:3px;border-radius:2px;background:var(--line)}
+.start li:last-child::after{display:none}
+.start p{font-size:17px;color:var(--ink-2);margin-top:6px}
+
+/* faq */
+.faq{display:grid;gap:12px;max-width:860px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--r-sm)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font-weight:700;font-size:19px;min-height:64px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:30px;line-height:1;color:var(--pink-ink);transition:transform .2s;flex:none}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 22px 20px;color:var(--ink-2)}
+
+/* form */
+.form-sec{background:var(--soft)}
+.form-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
+.form-side{display:grid;gap:18px}
+.form-side ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.form-side li{display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:18px;color:var(--ink-2)}
+.form-side li svg{width:26px;height:26px}
+.form-side li svg path{fill:none;stroke:var(--good);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.contact-box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;display:grid;gap:12px}
+.cline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.cline small{display:block;font-size:15px;color:var(--muted)}
+.cline strong{font-size:19px;user-select:all;overflow-wrap:anywhere}
+.copy{min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:15px;cursor:pointer}
+form{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:clamp(22px,4vw,36px)}
+.prog{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:26px}
+.prog div{display:grid;gap:8px}
+.prog i{height:8px;border-radius:999px;background:var(--soft-2);display:block}
+.prog div.on i{background:var(--grad)}
+.prog span{font-size:15px;font-weight:700;color:var(--muted)}
+.prog div.on span{color:var(--ink)}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:22px;min-width:0}
+legend{font-family:var(--f-display);font-weight:900;font-size:28px;margin-bottom:6px;padding:0}
+.q{display:grid;gap:10px}
+.q > label,.q > .lbl{font-weight:700;font-size:19px}
+.q .hint{font-size:16px;color:var(--muted);font-weight:400}
+.q input[type=text],.q input[type=tel],.q input[type=email],.q input[type=number],.q select{width:100%;min-height:58px;border:2px solid var(--line);border-radius:14px;padding:0 16px;font-size:19px;background:#fff}
+.q input:focus,.q select:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 4px var(--blue-tint)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.choice span{display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 16px;border:2px solid var(--line);border-radius:14px;font-size:18px;line-height:1.3;background:#fff;transition:border-color .15s,background .15s}
+.choice span::before{content:"";width:24px;height:24px;flex:none;border:2px solid #B9B1CB;border-radius:7px;background:#fff center/16px no-repeat}
+.choice input[type=radio] + span::before{border-radius:50%}
+.choice input:checked + span{border-color:var(--blue);background:var(--blue-tint)}
+.choice input:checked + span::before{border-color:var(--blue);background-color:var(--blue);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.choice input:focus-visible + span{outline:4px solid #6E93C9;outline-offset:2px}
+.err{color:#B3261E;font-size:16px;font-weight:700}
+.q.bad input,.q.bad select{border-color:#B3261E}
+.q.bad .choice span{border-color:#E8A9A4}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.done{text-align:center;display:grid;gap:16px;justify-items:center;padding-block:20px}
+.done .ic{width:76px;height:76px;border-radius:50%}
+.done .ic svg{width:40px;height:40px}
+.done p{max-width:46ch;color:var(--ink-2)}
+
+footer{padding-block:44px 56px;border-top:1px solid var(--line);font-size:15px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
+footer ol{margin:8px 0 0;padding-left:20px;display:grid;gap:4px}
+
+@media (max-width:980px){
+  .hero-grid,.ctx,.fun,.recibe,.calc,.form-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .opts,.trust{grid-template-columns:1fr}
+  .trust{margin-top:24px}
+  .grid4,.start{grid-template-columns:1fr 1fr}
+  .start li:nth-child(2)::after{display:none}
+  .top nav a.hide-sm{display:none}
+}
+@media (max-width:620px){
+  body{font-size:18px}
+  .steps,.grid4,.start,.two,.choices,.cmp{grid-template-columns:1fr}
+  .start li::after{display:none}
+  .bed-grid{grid-template-columns:repeat(5,1fr)}
+  .top img{height:32px}
+  .top nav a:not(.btn){display:none}
+  .btn{width:100%}
+  .top .btn{width:auto}
+  .nav .btn{width:auto;flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#inicio" aria-label="Numet, ir al inicio"><img src="assets/logo-numet.png" alt="numet+" width="409" height="107"></a>
+    <nav aria-label="Secciones">
+      <a href="#como" class="hide-sm">Cómo trabajamos</a>
+      <a href="#modelo" class="hide-sm">Costos</a>
+      <a href="#calculadora">Calculadora</a>
+      <a class="btn btn-pink" href="#reunion">Pedir reunión</a>
+    </nav>
+  </div>
+  <div class="bar" aria-hidden="true"></div>
+</header>
+
+<main id="inicio">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="for" id="forLine" hidden>Propuesta preparada para <strong id="forName"></strong></p>
+      <p class="eyebrow">Alianza estratégica para residencias de adultos mayores</p>
+      <h1 style="margin-top:14px">Le llevamos familias calificadas, <span class="grad-text">con la visita ya confirmada.</span></h1>
+      <p class="lead">Numet trabaja como el área comercial de su residencia: atraemos a las familias que buscan un lugar para sus padres, las evaluamos, las gestionamos en nuestro sistema y solo le enviamos visitas confirmadas. Usted paga únicamente cuando ingresa un residente.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#calculadora">Calcular cuánto puede ganar</a>
+        <a class="btn btn-line" href="#como">Ver cómo funciona</a>
+      </div>
+    </div>
+    <div class="beds" aria-label="Ejemplo: una residencia de 30 plazas que completa sus vacantes">
+      <div class="beds-top"><span>Ejemplo: residencia de 30 plazas</span><span class="occ"><span id="occPct">60</span>%</span></div>
+      <div class="meter" aria-hidden="true"><i id="occBar"></i></div>
+      <div class="bed-grid" id="bedGrid"></div>
+      <div class="legend">
+        <span><i style="background:var(--lav-tint);border:2px solid var(--lav)"></i>Ocupada</span>
+        <span><i style="border:2px dashed #B4AACB"></i>Libre</span>
+        <span><i style="background:var(--pink)"></i>Ocupada gracias a Numet</span>
+      </div>
+      <button class="linkbtn" id="replay" type="button">Ver la animación otra vez</button>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="trust">
+    <div><span class="ic good"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><div><strong>Sin costo fijo de Numet</strong><span>Paga solo cuando ingresa un residente.</span></div></div>
+    <div><span class="ic"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></span><div><strong>Visitas confirmadas</strong><span>No llamados sueltos: familias evaluadas y con turno.</span></div></div>
+    <div><span class="ic pink"><svg viewBox="0 0 24 24"><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg></span><div><strong>Todo a la vista</strong><span>Publicidad a nombre de la residencia y reporte mensual.</span></div></div>
+  </div>
+</div>
+
+<!-- CONTEXTO -->
+<section class="sec" id="contexto">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">El contexto</p>
+      <h2>Cada año hay más familias buscando residencia. El desafío es que lo encuentren a usted.</h2>
+      <p class="lead">Los hijos de 45 a 65 años son quienes deciden. Antes de llamar, buscan en Google y en redes sociales, y comparan.</p>
+    </div>
+    <div class="ctx">
+      <div class="card">
+        <h3>Personas de 65 años o más en la Argentina</h3>
+        <p class="muted" style="font-size:17px">Porcentaje de la población total</p>
+        <svg id="popChart" viewBox="0 0 520 300" role="img" aria-label="Personas de 65 años o más: 10% en 2010, 12% en 2022 y 16,4% proyectado para 2040">
+          <defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#1F6FB8" opacity=".35"/><line x1="0" y1="0" x2="0" y2="8" stroke="#1F6FB8" stroke-width="4"/></pattern></defs>
+        </svg>
+        <p class="src">Censo 2010 y 2022, y proyección oficial a 2040. Fuente: ConsultorSalud en base a INDEC <sup>1</sup>.</p>
+      </div>
+      <div class="stack">
+        <div class="card"><span class="big-n">7,4 millones</span><p style="margin-top:10px;color:var(--ink-2)">de personas tienen 60 años o más en la Argentina: el 16,2% de la población.</p><p class="src">INDEC, Censo 2022 <sup>2</sup></p></div>
+        <div class="card"><span class="big-n">108</span><p style="margin-top:10px;color:var(--ink-2)">personas de 65 años o más por cada 100 menores de 15 en la Ciudad de Buenos Aires. Es el único distrito donde ya hay más mayores que niños.</p><p class="src">Censo 2022 <sup>1</sup></p></div>
+        <div class="card loss"><span class="big-n" id="lossN">$ 288 millones</span><p style="margin-top:10px;color:var(--ink-2)" id="lossT">deja de facturar en un año una residencia con 6 plazas libres a $ 4.000.000 por mes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO -->
+<section class="sec tint" id="como">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">El rol de Numet</p>
+      <h2>Nos ocupamos de todo lo que pasa antes de la visita.</h2>
+      <p class="lead">Cinco pasos, todos a cargo de Numet. Su equipo recibe a la familia cuando ya está evaluada y con día y hora.</p>
+    </div>
+    <ol class="steps">
+      <li><span class="ic"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></span><span class="num">PASO 1</span><h3>Atraemos</h3><p>Publicidad en Google y redes sociales para llegar a las familias de su zona que buscan residencia.</p><span class="gain">Aparece justo cuando lo buscan.</span></li>
+      <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg></span><span class="num">PASO 2</span><h3>Evaluamos</h3><p>Respondemos cada consulta en minutos, por WhatsApp, y verificamos presupuesto, necesidades y zona.</p><span class="gain">Su equipo no pierde tiempo.</span></li>
+      <li><span class="ic"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="5" height="15" rx="1.5"/><rect x="10" y="4.5" width="5" height="10" rx="1.5"/><rect x="16.5" y="4.5" width="4" height="6" rx="1.5"/></svg></span><span class="num">PASO 3</span><h3>Registramos</h3><p>Cada familia queda cargada en nuestro sistema de seguimiento (CRM), con su historial y estado.</p><span class="gain">Ninguna consulta se pierde.</span></li>
+      <li><span class="ic"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></span><span class="num">PASO 4</span><h3>Confirmamos la visita</h3><p>Coordinamos día y hora, le enviamos la ficha de la familia y recordamos la visita el día anterior.</p><span class="gain">Familias que sí vienen.</span></li>
+      <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M21 19H3"/></svg></span><span class="num">PASO 5</span><h3>Seguimos y le informamos</h3><p>Acompañamos a la familia hasta que decide y cada mes recibe un informe con los resultados.</p><span class="gain">Sabe qué rinde cada peso.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- EMBUDO -->
+<section class="sec" id="embudo">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Quién hace cada cosa</p>
+      <h2>Numet filtra. Su residencia recibe a la familia y concreta el ingreso.</h2>
+    </div>
+    <div class="fun">
+      <div style="overflow-x:auto">
+        <svg class="funnel" viewBox="0 0 640 380" role="img" aria-label="Embudo de cinco niveles: familias que buscan, consultas, familias evaluadas, visitas confirmadas e ingreso. Numet se ocupa de los cuatro primeros; la residencia del ingreso.">
+          <g><path d="M10 10H500L474 76H36Z" fill="#1F6FB8" opacity=".45"/><text x="255" y="40" text-anchor="middle" fill="#fff" font-weight="700" font-size="17">Familias que buscan residencia</text><text x="255" y="62" text-anchor="middle" fill="#fff" font-size="14">en Google y redes, en su zona</text></g>
+          <g><path d="M40 84H470L444 150H66Z" fill="#1F6FB8" opacity=".65"/><text x="255" y="114" text-anchor="middle" fill="#fff" font-weight="700" font-size="17">Consultas recibidas</text><text x="255" y="136" text-anchor="middle" fill="#fff" font-size="14">por WhatsApp y formulario</text></g>
+          <g><path d="M70 158H440L414 224H96Z" fill="#1F6FB8"/><text x="255" y="188" text-anchor="middle" fill="#fff" font-weight="700" font-size="17">Familias evaluadas</text><text x="255" y="210" text-anchor="middle" fill="#fff" font-size="14">presupuesto, necesidades y zona</text></g>
+          <g><path d="M100 232H410L384 298H126Z" fill="#D0558A"/><text x="255" y="262" text-anchor="middle" fill="#fff" font-weight="700" font-size="17">Visitas confirmadas</text><text x="255" y="284" text-anchor="middle" fill="#fff" font-size="14">con día, hora y ficha</text></g>
+          <g><path d="M130 306H380L358 370H152Z" fill="#B8860B"/><text x="255" y="336" text-anchor="middle" fill="#fff" font-weight="700" font-size="17">Ingreso del residente</text><text x="255" y="357" text-anchor="middle" fill="#fff" font-size="14">en la residencia</text></g>
+          <path d="M518 12q12 0 12 12v262q0 12-12 12" fill="none" stroke="#625C75" stroke-width="2"/>
+          <text x="544" y="148" fill="#1D1A2B" font-weight="700" font-size="17">Numet</text><text x="544" y="170" fill="#625C75" font-size="14">pasos 1 a 4</text>
+          <path d="M518 308q12 0 12 12v38q0 12-12 12" fill="none" stroke="#625C75" stroke-width="2"/>
+          <text x="544" y="336" fill="#1D1A2B" font-weight="700" font-size="17">Residencia</text><text x="544" y="358" fill="#625C75" font-size="14">el ingreso</text>
+        </svg>
+      </div>
+      <div class="who">
+        <div class="card"><i style="background:#1F6FB8"></i><h3>Numet atrae y evalúa</h3><p>Publicidad, respuesta inmediata y evaluación con los criterios que usted define.</p></div>
+        <div class="card"><i style="background:#D0558A"></i><h3>Numet confirma la visita</h3><p>Le llega cada familia con turno y con su ficha completa.</p></div>
+        <div class="card"><i style="background:#B8860B"></i><h3>Usted concreta el ingreso</h3><p>Su equipo recibe a la familia y cierra el ingreso, como lo hace hoy.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LO QUE RECIBE -->
+<section class="sec tint" id="recibe">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Lo que recibe la residencia</p>
+      <h2>Antes de cada visita, una ficha con todo lo que necesita saber.</h2>
+      <p class="lead">Evaluamos a cada familia con seis preguntas. Si no encaja con su residencia, no se la enviamos.</p>
+    </div>
+    <div class="recibe">
+      <ul class="crit">
+        <li><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></span><div><strong>Presupuesto</strong><span>Puede pagar la cuota de su residencia.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span><div><strong>Necesidades de cuidado</strong><span>Autoválido, semidependiente o dependiente.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.6 6-11a6 6 0 0 0-12 0c0 5.4 6 11 6 11z"/><circle cx="12" cy="10" r="2.2"/></svg></span><div><strong>Zona</strong><span>Puede visitarlo con frecuencia.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></span><div><strong>Urgencia</strong><span>Necesita lugar ahora o más adelante.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/></svg></span><div><strong>Cobertura médica</strong><span>Obra social o prepaga con la que trabaja.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 11l2 2 3.5-3.5"/></svg></span><div><strong>Quién decide</strong><span>La persona que decide viene a la visita.</span></div></li>
+      </ul>
+      <div class="ficha" aria-label="Ejemplo de ficha de visita">
+        <div class="ficha-h"><b>Ficha de visita confirmada</b><span class="pill demo">Ejemplo con datos ficticios</span></div>
+        <dl>
+          <dt>Familia</dt><dd>Familia G.</dd>
+          <dt>Persona mayor</dt><dd>Mujer, 84 años</dd>
+          <dt>Cuidado</dt><dd>Semidependiente, camina con andador</dd>
+          <dt>Presupuesto</dt><dd>Dentro de su cuota</dd>
+          <dt>Cobertura</dt><dd>Prepaga</dd>
+          <dt>Urgencia</dt><dd>Ingreso en los próximos 30 días</dd>
+          <dt>Decide</dt><dd>Su hija, que viene a la visita</dd>
+        </dl>
+        <div class="visit"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4M9 15l2 2 4-4"/></svg><span><b>Visita:</b> jueves 10:30 · confirmada el día anterior</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELO -->
+<section class="sec" id="modelo">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Costos</p>
+      <h2>Numet cobra solo por resultados. Usted elige cómo.</h2>
+      <p class="lead">La residencia invierte en publicidad y Numet cobra únicamente por cada residente que ingresa. Hay dos formas de pago.</p>
+    </div>
+    <div class="opts">
+      <div class="opt a">
+        <span class="tag">Opción A · en cuotas</span>
+        <span class="big">15%</span>
+        <p>de la cuota mensual de cada residente que ingresa por Numet, durante sus primeros 12 meses.</p>
+        <ul><li>Se paga mes a mes, con lo que ya cobra.</li><li>Si el residente se va, deja de pagar ese mes.</li></ul>
+      </div>
+      <div class="opt b">
+        <span class="tag">Opción B · pago único</span>
+        <span class="big">120%</span>
+        <p>de una cuota mensual, una sola vez, cuando ingresa el residente.</p>
+        <ul><li>Un solo pago, sin seguimiento mensual.</li><li>Garantía: si el residente se va en los primeros 60 días, buscamos un reemplazo sin cargo.</li></ul>
+      </div>
+      <div class="opt ads">
+        <span class="tag">A cargo de la residencia</span>
+        <h3>Inversión en publicidad</h3>
+        <p>Se paga directamente a Google y Meta, desde una cuenta a nombre de la residencia. El monto lo definimos juntos según el valor de la plaza y las vacantes, y se pausa cuando las plazas se completan.</p>
+      </div>
+    </div>
+    <p class="note">Los porcentajes se calculan sobre la cuota sin IVA. Un residente cuenta como derivado por Numet si ingresa dentro de los 6 meses desde que su familia quedó registrada en nuestro sistema.</p>
+  </div>
+</section>
+
+<!-- CALCULADORA -->
+<section class="sec tint" id="calculadora">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Calculadora</p>
+      <h2>Vea el resultado con los números de su residencia.</h2>
+      <p class="lead">Cambie los valores con los botones <b>−</b> y <b>+</b>, o escriba el número. El resultado se actualiza solo.</p>
+    </div>
+    <div class="calc">
+      <div class="panel">
+        <div class="field"><label for="inCuota">Cuota mensual por plaza <small>(sin IVA)</small></label>
+          <div class="stepper"><button type="button" data-t="inCuota" data-d="-1" aria-label="Bajar la cuota">−</button><input id="inCuota" inputmode="numeric" value="$ 4.000.000" aria-describedby="hCuota"><button type="button" data-t="inCuota" data-d="1" aria-label="Subir la cuota">+</button></div><small id="hCuota">Cambia de a $ 250.000</small></div>
+        <div class="field"><label for="inPlazas">Plazas libres que quiere ocupar</label>
+          <div class="stepper"><button type="button" data-t="inPlazas" data-d="-1" aria-label="Menos plazas">−</button><input id="inPlazas" inputmode="numeric" value="6"><button type="button" data-t="inPlazas" data-d="1" aria-label="Más plazas">+</button></div></div>
+        <div class="field"><label for="inRitmo">Ingresos por mes</label>
+          <div class="stepper"><button type="button" data-t="inRitmo" data-d="-1" aria-label="Menos ingresos por mes">−</button><input id="inRitmo" inputmode="numeric" value="1"><button type="button" data-t="inRitmo" data-d="1" aria-label="Más ingresos por mes">+</button></div></div>
+        <div class="field"><label for="inPauta">Inversión en publicidad por mes</label>
+          <div class="stepper"><button type="button" data-t="inPauta" data-d="-1" aria-label="Bajar la inversión">−</button><input id="inPauta" inputmode="numeric" value="$ 1.200.000"><button type="button" data-t="inPauta" data-d="1" aria-label="Subir la inversión">+</button></div><small>Cambia de a $ 100.000</small></div>
+        <div class="field"><span class="lbl" id="lblOpt">Forma de pago a Numet</span>
+          <div class="seg" role="group" aria-labelledby="lblOpt"><button type="button" data-opt="A" aria-pressed="true">Opción A<br><small>15% · 12 meses</small></button><button type="button" data-opt="B" aria-pressed="false">Opción B<br><small>120% · pago único</small></button></div></div>
+        <div class="assume"><span>El cálculo supone que:</span><span>· el primer ingreso llega en el mes 2,</span><span>· los residentes se quedan todo el año,</span><span>· la publicidad se pausa al completar las plazas.</span><span>Son valores de ejemplo, no una garantía de resultados.</span></div>
+      </div>
+      <div class="res">
+        <div class="tiles">
+          <div class="tile"><span class="k">Facturación nueva en 12 meses</span><span class="v" id="tFact"></span></div>
+          <div class="tile"><span class="k"><i style="background:var(--c-ads)"></i>Publicidad</span><span class="v" id="tAds"></span></div>
+          <div class="tile"><span class="k"><i style="background:var(--c-num)"></i>Pago a Numet</span><span class="v" id="tNum"></span></div>
+          <div class="tile hl"><span class="k"><i style="background:var(--c-res)"></i>Le queda a la residencia</span><span class="v" id="tNet"></span></div>
+        </div>
+        <div class="panel chart-card">
+          <h3>Lo que le queda a la residencia, mes a mes</h3>
+          <p class="sub" id="chartSub"></p>
+          <div class="chart-box" id="chartBox">
+            <svg id="lineChart" viewBox="0 0 720 300" role="img" aria-label="Resultado acumulado de la residencia en 12 meses con la Opción A y con la Opción B"></svg>
+            <div class="tip" id="tip" hidden></div>
+          </div>
+          <div class="legend" id="lineLegend"><span><i style="background:var(--c-res)"></i>Con la Opción A</span><span><i style="background:var(--c-num)"></i>Con la Opción B</span></div>
+          <div class="cmp" style="margin-top:20px">
+            <div id="cmpA"><span>Pago total a Numet · Opción A</span><b id="pA"></b></div>
+            <div id="cmpB"><span>Pago total a Numet · Opción B</span><b id="pB"></b></div>
+          </div>
+          <h3 style="font-size:19px;margin-top:24px">Cómo se reparte la facturación nueva</h3>
+          <div class="split-bar" id="splitBar" aria-hidden="true"></div>
+          <div class="legend" id="splitLegend"></div>
+          <details class="tbl"><summary>Ver el detalle mes a mes</summary><div class="tbl-scroll"><table id="tbl"></table></div></details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPARENCIA -->
+<section class="sec" id="transparencia">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Transparencia</p><h2>Reglas claras desde el primer día.</h2></div>
+    <div class="grid4">
+      <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><h3>Cada familia, registrada</h3><p>Queda con fecha en el sistema antes de la visita. Así sabemos con certeza quién llegó por Numet.</p></div>
+      <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M21 19H3"/></svg></span><h3>Informe mensual</h3><p>Consultas, visitas, ingresos y cuánto se invirtió en publicidad.</p></div>
+      <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 11h18M7 15h3"/></svg></span><h3>Publicidad a su nombre</h3><p>Las cuentas de Google y Meta son de la residencia. Ve cada peso invertido.</p></div>
+      <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><h3>Datos protegidos</h3><p>La información de las familias se usa solo para este fin, según la ley argentina de datos personales.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INICIO -->
+<section class="sec tint" id="empezar">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Cómo empezamos</p><h2>Cuatro pasos y empiezan a llegar las visitas.</h2></div>
+    <ol class="start">
+      <li><h3>Reunión de 15 minutos</h3><p>Conocemos su residencia, las plazas libres y los casos que recibe.</p></li>
+      <li><h3>Plan a medida</h3><p>Definimos juntos los criterios para evaluar familias y la inversión recomendada.</p></li>
+      <li><h3>Puesta en marcha</h3><p>Armamos la publicidad, el WhatsApp y el sistema de seguimiento.</p></li>
+      <li><h3>Primeras visitas</h3><p>Le enviamos las primeras familias con la visita confirmada.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="preguntas">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Preguntas frecuentes</p><h2>Lo que suelen preguntarnos.</h2></div>
+    <div class="faq">
+      <details><summary>¿Qué pasa si la familia visita la residencia y no ingresa?</summary><p>No paga nada a Numet. Seguimos en contacto con la familia y, si ingresa dentro de los 6 meses, se considera derivada por Numet.</p></details>
+      <details><summary>¿Por qué la publicidad la paga la residencia?</summary><p>Así las cuentas son suyas, ve cada peso invertido y el pago a Numet queda atado solo al resultado.</p></details>
+      <details><summary>¿Cuánto hay que invertir en publicidad?</summary><p>Depende del valor de la plaza, la zona y las vacantes. En la primera reunión le damos una recomendación concreta, que se ajusta mes a mes según los resultados.</p></details>
+      <details><summary>¿Qué opción de pago me conviene?</summary><p>Si los residentes suelen quedarse más de 8 meses, la Opción B (pago único) es más económica. Si prefiere pagar de a poco y solo mientras el residente permanece, conviene la Opción A. La calculadora muestra las dos.</p></details>
+      <details><summary>¿Tengo que cambiar algo en cómo trabajamos?</summary><p>No. Su equipo recibe las visitas como siempre. Solo necesitamos saber cada mes qué plazas tiene libres y qué casos puede recibir.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="sec form-sec" id="reunion">
+  <div class="wrap form-grid">
+    <div class="form-side">
+      <p class="eyebrow">Pedir una reunión</p>
+      <h2>Cuéntenos de su residencia y le preparamos un plan.</h2>
+      <p class="lead">Son tres pasos cortos. Con estos datos llegamos a la reunión con una propuesta concreta para usted.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span>Le respondemos dentro de las 24 horas hábiles.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span>La reunión dura 15 minutos y no tiene costo.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span>Sus datos se usan solo para contactarlo.</span></li>
+      </ul>
+      <div class="contact-box">
+        <p style="font-weight:700">¿Prefiere hablar directamente?</p>
+        <div class="cline"><div><small>WhatsApp · Ilan, Numet</small><strong id="cWa">11 4029-5327</strong></div><button class="copy" type="button" data-copy="cWa">Copiar</button></div>
+        <div class="cline"><div><small>Correo</small><strong id="cMail">numet.marketing@gmail.com</strong></div><button class="copy" type="button" data-copy="cMail">Copiar</button></div>
+      </div>
+    </div>
+
+    <form id="leadForm" novalidate>
+      <div class="prog" aria-hidden="true"><div class="on"><i></i><span>1. Su residencia</span></div><div><i></i><span>2. Situación actual</span></div><div><i></i><span>3. Contacto</span></div></div>
+      <div class="hp" aria-hidden="true"><label for="website">No completar</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+
+      <fieldset data-step="1">
+        <legend>Su residencia <span class="muted" style="font-size:17px;font-weight:700">· Paso 1 de 3</span></legend>
+        <div class="q"><label for="f_res">Nombre de la residencia</label><input type="text" id="f_res" name="residencia" required autocomplete="organization"></div>
+        <div class="q"><label for="f_loc">Localidad o barrio</label><input type="text" id="f_loc" name="localidad" required placeholder="Ej.: Belgrano, CABA"></div>
+        <div class="two">
+          <div class="q"><label for="f_tot">Plazas en total</label><input type="number" id="f_tot" name="plazas_total" min="1" max="500" required inputmode="numeric"></div>
+          <div class="q"><label for="f_lib">Plazas libres hoy</label><input type="number" id="f_lib" name="plazas_libres" min="0" max="500" required inputmode="numeric"></div>
+        </div>
+      </fieldset>
+
+      <fieldset data-step="2" hidden>
+        <legend>Situación actual <span class="muted" style="font-size:17px;font-weight:700">· Paso 2 de 3</span></legend>
+        <div class="q"><label for="f_cuota">Cuota mensual promedio <span class="hint">(sin IVA)</span></label>
+          <select id="f_cuota" name="cuota" required><option value="">Elegir una opción</option><option>Menos de $ 2.000.000</option><option>$ 2.000.000 a $ 3.500.000</option><option>$ 3.500.000 a $ 5.000.000</option><option>Más de $ 5.000.000</option></select></div>
+        <div class="q" data-group="casos"><span class="lbl" id="l_casos">¿Qué casos reciben? <span class="hint">Puede marcar varios</span></span>
+          <div class="choices" role="group" aria-labelledby="l_casos">
+            <label class="choice"><input type="checkbox" name="casos" value="Autoválidos"><span>Autoválidos</span></label>
+            <label class="choice"><input type="checkbox" name="casos" value="Semidependientes"><span>Semidependientes</span></label>
+            <label class="choice"><input type="checkbox" name="casos" value="Dependientes"><span>Dependientes</span></label>
+            <label class="choice"><input type="checkbox" name="casos" value="Alzheimer y demencias"><span>Alzheimer y demencias</span></label>
+          </div></div>
+        <div class="q" data-group="origen"><span class="lbl" id="l_origen">Hoy, ¿cómo llegan los nuevos residentes? <span class="hint">Puede marcar varios</span></span>
+          <div class="choices" role="group" aria-labelledby="l_origen">
+            <label class="choice"><input type="checkbox" name="origen" value="Recomendación de otras familias"><span>Recomendación de familias</span></label>
+            <label class="choice"><input type="checkbox" name="origen" value="Médicos o clínicas"><span>Médicos o clínicas</span></label>
+            <label class="choice"><input type="checkbox" name="origen" value="Google o redes sociales"><span>Google o redes sociales</span></label>
+            <label class="choice"><input type="checkbox" name="origen" value="Obras sociales o PAMI"><span>Obras sociales o PAMI</span></label>
+          </div></div>
+        <div class="q" data-group="publicidad"><span class="lbl" id="l_pub">¿Invierten hoy en publicidad?</span>
+          <div class="choices" role="radiogroup" aria-labelledby="l_pub">
+            <label class="choice"><input type="radio" name="publicidad" value="No"><span>No</span></label>
+            <label class="choice"><input type="radio" name="publicidad" value="Sí, menos de $ 500.000 por mes"><span>Sí, menos de $ 500.000</span></label>
+            <label class="choice"><input type="radio" name="publicidad" value="Sí, entre $ 500.000 y $ 1.500.000 por mes"><span>Sí, $ 500.000 a $ 1.500.000</span></label>
+            <label class="choice"><input type="radio" name="publicidad" value="Sí, más de $ 1.500.000 por mes"><span>Sí, más de $ 1.500.000</span></label>
+          </div></div>
+      </fieldset>
+
+      <fieldset data-step="3" hidden>
+        <legend>Contacto <span class="muted" style="font-size:17px;font-weight:700">· Paso 3 de 3</span></legend>
+        <div class="q"><label for="f_nom">Su nombre y apellido</label><input type="text" id="f_nom" name="nombre" required autocomplete="name"></div>
+        <div class="q" data-group="cargo"><span class="lbl" id="l_cargo">Su cargo</span>
+          <div class="choices" role="radiogroup" aria-labelledby="l_cargo">
+            <label class="choice"><input type="radio" name="cargo" value="Dueño/a" required><span>Dueño/a</span></label>
+            <label class="choice"><input type="radio" name="cargo" value="Director/a"><span>Director/a</span></label>
+            <label class="choice"><input type="radio" name="cargo" value="Administración"><span>Administración</span></label>
+            <label class="choice"><input type="radio" name="cargo" value="Otro"><span>Otro</span></label>
+          </div></div>
+        <div class="two">
+          <div class="q"><label for="f_tel">WhatsApp</label><input type="tel" id="f_tel" name="whatsapp" required autocomplete="tel" placeholder="Ej.: 11 2345-6789"></div>
+          <div class="q"><label for="f_mail">Correo <span class="hint">(opcional)</span></label><input type="email" id="f_mail" name="email" autocomplete="email"></div>
+        </div>
+        <div class="q" data-group="horario"><span class="lbl" id="l_hor">¿Cuándo le queda mejor la reunión?</span>
+          <div class="choices" role="radiogroup" aria-labelledby="l_hor">
+            <label class="choice"><input type="radio" name="horario" value="Por la mañana"><span>Por la mañana</span></label>
+            <label class="choice"><input type="radio" name="horario" value="Por la tarde"><span>Por la tarde</span></label>
+          </div></div>
+      </fieldset>
+
+      <div class="done" id="done" hidden>
+        <span class="ic good"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span>
+        <h2 style="font-size:32px">¡Gracias! Recibimos sus datos.</h2>
+        <p>Lo vamos a contactar por WhatsApp dentro de las 24 horas hábiles para coordinar la reunión.</p>
+      </div>
+      <div class="done" id="fallback" hidden>
+        <span class="ic pink"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/></svg></span>
+        <h2 style="font-size:30px">Falta un último paso</h2>
+        <p>No pudimos enviar el formulario automáticamente. Toque el botón para enviarnos sus datos por WhatsApp. El mensaje ya está escrito.</p>
+        <a class="btn btn-primary" id="waLink" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <p class="muted" style="font-size:16px">Si el botón no abre WhatsApp, escríbanos al 11 4029-5327.</p>
+      </div>
+
+      <div class="nav" id="formNav">
+        <button type="button" class="btn btn-line" id="back" hidden>Volver</button>
+        <button type="button" class="btn btn-primary" id="next">Continuar</button>
+        <button type="submit" class="btn btn-pink" id="send" hidden>Enviar y pedir reunión</button>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div style="max-width:640px">
+      <strong style="color:var(--ink)">Fuentes</strong>
+      <ol>
+        <li><a href="https://consultorsalud.com/argentina-proyecta-mas-adultos-que-ninos-2040/" target="_blank" rel="noopener">ConsultorSalud: Argentina proyecta más adultos mayores que niños al año 2040</a></li>
+        <li><a href="https://shiny.indec.gob.ar/tablero_pm/" target="_blank" rel="noopener">INDEC: tablero Personas mayores, Censo 2022</a></li>
+      </ol>
+      <p style="margin-top:10px">Los valores de la calculadora son ejemplos y no constituyen una promesa de resultados.</p>
+    </div>
+    <p>Numet · Marketing para instituciones de salud · Buenos Aires</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){return document.querySelector(s)};
+  var nf=new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
+  function money(v){return "$ "+nf.format(Math.round(v))}
+  function mill(v){var m=Math.abs(v)/1e6;var s=m>=100?nf.format(Math.round(m)):m.toLocaleString("es-AR",{maximumFractionDigits:1});return (v<0?"−":"")+"$ "+s+" M"}
+  function millLong(v){var m=v/1e6;return "$ "+(m>=100?nf.format(Math.round(m)):m.toLocaleString("es-AR",{maximumFractionDigits:1}))+" millones"}
+  var WA="5491140295327";
+
+  /* personalización: ?r=Nombre o #nombre-de-residencia */
+  var reserved=["inicio","como","modelo","calculadora","reunion","contexto","embudo","recibe","transparencia","empezar","preguntas"];
+  var small=["de","del","la","las","los","y","el"];
+  function title(s){return s.split(/[-\s]+/).filter(Boolean).map(function(w,i){w=w.toLowerCase();return i>0&&small.indexOf(w)>-1?w:w.charAt(0).toUpperCase()+w.slice(1)}).join(" ")}
+  var resName="";
+  try{var qp=new URLSearchParams(location.search).get("r");if(qp)resName=title(qp)}catch(e){}
+  if(!resName){var h=decodeURIComponent((location.hash||"").slice(1));if(h&&reserved.indexOf(h)<0)resName=title(h)}
+  if(resName){$("#forName").textContent=resName;$("#forLine").hidden=false;var fr=$("#f_res");if(fr&&!fr.value)fr.value=resName}
+
+  /* plazas animadas */
+  var bedSvg='<svg viewBox="0 0 24 16" aria-hidden="true"><path d="M2 3v11M2 10h20v4M22 10V8a2 2 0 0 0-2-2h-9v4M5.5 8.5a1.5 1.5 0 1 0 0-.01"/></svg>';
+  var grid=$("#bedGrid"),N=30,base=18,news=[18,20,21,23,24,26,27,29],beds=[],timers=[];
+  for(var i=0;i<N;i++){var d=document.createElement("div");d.className="bed";d.innerHTML=bedSvg;grid.appendChild(d);beds.push(d)}
+  function setOcc(n){var p=Math.round(n/N*100);$("#occPct").textContent=p;$("#occBar").style.width=p+"%"}
+  function play(){
+    timers.forEach(clearTimeout);timers=[];
+    beds.forEach(function(b,i){b.className="bed"+(i<base?" full":"")});setOcc(base);
+    var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    news.forEach(function(idx,k){timers.push(setTimeout(function(){beds[idx].className="bed new";setOcc(base+k+1)},reduce?0:800+k*420))});
+  }
+  play();$("#replay").addEventListener("click",play);
+
+  /* gráfico de población */
+  (function(){
+    var svg=$("#popChart"),data=[["2010",10,false],["2022",12,false],["2040",16.4,true]];
+    var W=520,H=300,L=52,R=16,T=20,B=44,max=20;
+    var y=function(v){return T+(max-v)*(H-T-B)/max};
+    var g="";
+    [0,5,10,15,20].forEach(function(t){g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="'+(t===0?"#9A93AE":"#E2DCEA")+'" stroke-width="1"/><text x="'+(L-10)+'" y="'+(y(t)+5)+'" text-anchor="end" font-size="14" fill="#625C75">'+t+'%</text>'});
+    var bw=96,gap=(W-L-R-3*bw)/4;
+    data.forEach(function(d,i){
+      var x=L+gap+(bw+gap)*i,top=y(d[1]),hgt=y(0)-top;
+      g+='<path d="M'+x+' '+y(0)+'V'+(top+6)+'q0-6 6-6h'+(bw-12)+'q6 0 6 6V'+y(0)+'Z" fill="'+(d[2]?"url(#hatch)":"#1F6FB8")+'"><title>'+d[0]+': '+String(d[1]).replace(".",",")+'%'+(d[2]?" (proyección)":"")+'</title></path>';
+      g+='<text x="'+(x+bw/2)+'" y="'+(top-10)+'" text-anchor="middle" font-size="20" font-weight="700" fill="#1D1A2B">'+String(d[1]).replace(".",",")+'%</text>';
+      g+='<text x="'+(x+bw/2)+'" y="'+(H-18)+'" text-anchor="middle" font-size="16" fill="#3F3A52">'+d[0]+(d[2]?" · proyección":"")+'</text>';
+    });
+    svg.insertAdjacentHTML("beforeend",g);
+  })();
+
+  /* calculadora */
+  var cfg={inCuota:{min:1000000,max:12000000,step:250000,val:4000000,money:true},inPlazas:{min:1,max:40,step:1,val:6},inRitmo:{min:1,max:5,step:1,val:1},inPauta:{min:200000,max:8000000,step:100000,val:1200000,money:true}};
+  var opt="A";
+  function show(id){var c=cfg[id];$("#"+id).value=c.money?money(c.val):String(c.val)}
+  function parse(id){var c=cfg[id];var raw=String($("#"+id).value).replace(/[^\d]/g,"");var v=parseInt(raw,10);if(isNaN(v))v=c.val;c.val=Math.min(c.max,Math.max(c.min,v));show(id);render()}
+  Object.keys(cfg).forEach(function(id){show(id);var el=$("#"+id);el.addEventListener("change",function(){parse(id)});el.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();parse(id)}})});
+  document.querySelectorAll(".stepper button").forEach(function(b){b.addEventListener("click",function(){var id=b.dataset.t,c=cfg[id];c.val=Math.min(c.max,Math.max(c.min,c.val+c.step*(+b.dataset.d)));show(id);render()})});
+  document.querySelectorAll(".seg button").forEach(function(b){b.addEventListener("click",function(){opt=b.dataset.opt;document.querySelectorAll(".seg button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()})});
+
+  function sim(mode){
+    var cuota=cfg.inCuota.val,plazas=cfg.inPlazas.val,ritmo=cfg.inRitmo.val,pauta=cfg.inPauta.val;
+    var entries=[],occ=0,acc=0,rows=[];
+    for(var m=1;m<=12;m++){
+      var pa=occ>=plazas?0:pauta,nuevos=0;
+      if(m>=2&&occ<plazas){nuevos=Math.min(ritmo,plazas-occ);for(var k=0;k<nuevos;k++)entries.push(m);occ+=nuevos}
+      var ing=occ*cuota;
+      var com=mode==="A"?entries.filter(function(e){return m-e<12}).length*cuota*0.15:nuevos*cuota*1.2;
+      var net=ing-pa-com;acc+=net;
+      rows.push({m:m,occ:occ,ing:ing,pa:pa,com:com,net:net,acc:acc});
+    }
+    return rows;
+  }
+  function sum(rows,k){return rows.reduce(function(a,r){return a+r[k]},0)}
+
+  function render(){
+    var A=sim("A"),B=sim("B"),R=opt==="A"?A:B;
+    var ing=sum(R,"ing"),pa=sum(R,"pa"),com=sum(R,"com"),net=ing-pa-com;
+    $("#tFact").textContent=mill(ing);$("#tAds").textContent=mill(pa);$("#tNum").textContent=mill(com);$("#tNet").textContent=mill(net);
+    $("#pA").textContent=money(sum(A,"com"));$("#pB").textContent=money(sum(B,"com"));
+    $("#cmpA").classList.toggle("on",opt==="A");$("#cmpB").classList.toggle("on",opt==="B");
+    var loss=cfg.inPlazas.val*cfg.inCuota.val*12;
+    $("#lossN").textContent=millLong(loss);
+    $("#lossT").textContent="deja de facturar en un año una residencia con "+cfg.inPlazas.val+(cfg.inPlazas.val>1?" plazas libres":" plaza libre")+" a "+money(cfg.inCuota.val)+" por mes.";
+    var be=-1;for(var i=1;i<R.length;i++){if(R[i].acc>=0){be=i;break}}
+    var spent=pa+com,ratio=spent>0?ing/spent:0;
+    $("#chartSub").textContent=(be>=0?"Con la Opción "+opt+", la residencia recupera lo invertido en el mes "+R[be].m+". ":"")+"Por cada $ 1 que destina a publicidad y a Numet, factura $ "+ratio.toLocaleString("es-AR",{maximumFractionDigits:1})+".";
+    drawLine(A,B);
+    var parts=[["Le queda a la residencia",Math.max(net,0),"var(--c-res)"],["Pago a Numet",com,"var(--c-num)"],["Publicidad",pa,"var(--c-ads)"]];
+    var tot=parts.reduce(function(a,p){return a+p[1]},0)||1;
+    $("#splitBar").innerHTML=parts.map(function(p){return '<div style="flex-grow:'+p[1]+';background:'+p[2]+'"></div>'}).join("");
+    $("#splitLegend").innerHTML=parts.map(function(p){return '<span><i style="background:'+p[2]+'"></i>'+p[0]+': <b>'+(p[1]/tot*100).toLocaleString("es-AR",{maximumFractionDigits:0})+'%</b> ('+mill(p[1])+')</span>'}).join("");
+    $("#tbl").innerHTML="<thead><tr><th>Mes</th><th>Residentes nuevos</th><th>Facturación nueva</th><th>Publicidad</th><th>Pago a Numet</th><th>Le queda en el mes</th><th>Acumulado</th></tr></thead><tbody>"+R.map(function(r){return "<tr><td>Mes "+r.m+"</td><td>"+r.occ+"</td><td>"+money(r.ing)+"</td><td>"+money(r.pa)+"</td><td>"+money(r.com)+"</td><td>"+money(r.net)+"</td><td>"+money(r.acc)+"</td></tr>"}).join("")+"</tbody>";
+  }
+
+  function nice(lo,hi){var span=(hi-lo)||1,raw=span/4,p=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/p,st=(n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p;var a=Math.floor(lo/st)*st,b=Math.ceil(hi/st)*st,t=[];for(var v=a;v<=b+st/2;v+=st)t.push(Math.round(v));return {lo:a,hi:b,t:t}}
+  function drawLine(A,B){
+    var svg=$("#lineChart"),W=720,H=300,L=72,Rp=96,T=20,Bt=40;
+    var all=A.map(function(r){return r.acc}).concat(B.map(function(r){return r.acc}));
+    var s=nice(Math.min(0,Math.min.apply(null,all)),Math.max(0,Math.max.apply(null,all)));
+    var x=function(i){return L+i*(W-L-Rp)/11},y=function(v){return T+(s.hi-v)*(H-T-Bt)/((s.hi-s.lo)||1)};
+    var g="";
+    s.t.forEach(function(t){g+='<line x1="'+L+'" x2="'+(W-Rp)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="'+(t===0?"#9A93AE":"#E2DCEA")+'"/><text x="'+(L-10)+'" y="'+(y(t)+4)+'" text-anchor="end">'+mill(t)+'</text>'});
+    A.forEach(function(r,i){g+='<text x="'+x(i)+'" y="'+(H-14)+'" text-anchor="middle">'+r.m+'</text>'});
+    g+='<text x="'+(W-Rp+10)+'" y="'+(H-14)+'">mes</text>';
+    function line(rows,col,w){return '<polyline points="'+rows.map(function(r,i){return x(i)+","+y(r.acc)}).join(" ")+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-linejoin="round" stroke-linecap="round"/>'}
+    var sel=opt==="A"?[A,"#1F6FB8"]:[B,"#D0558A"],oth=opt==="A"?[B,"#D0558A"]:[A,"#1F6FB8"];
+    g+=line(oth[0],oth[1],2)+line(sel[0],sel[1],3.5);
+    var la=A[11].acc,lb=B[11].acc,ya=y(la),yb=y(lb);
+    if(Math.abs(ya-yb)<20){if(ya<yb){ya-=10;yb+=10}else{ya+=10;yb-=10}}
+    g+='<circle cx="'+x(11)+'" cy="'+y(la)+'" r="5" fill="#1F6FB8" stroke="#fff" stroke-width="2"/><circle cx="'+x(11)+'" cy="'+y(lb)+'" r="5" fill="#D0558A" stroke="#fff" stroke-width="2"/>';
+    g+='<text x="'+(x(11)+12)+'" y="'+(ya+5)+'" font-weight="700" font-size="14" fill="#1D1A2B">A · '+mill(la)+'</text><text x="'+(x(11)+12)+'" y="'+(yb+5)+'" font-weight="700" font-size="14" fill="#1D1A2B">B · '+mill(lb)+'</text>';
+    g+='<line id="xh" x1="0" x2="0" y1="'+T+'" y2="'+(H-Bt)+'" stroke="#9A93AE" stroke-dasharray="3 3" style="visibility:hidden"/>';
+    g+='<rect id="hit" x="'+L+'" y="'+T+'" width="'+(W-L-Rp)+'" height="'+(H-T-Bt)+'" fill="transparent" style="cursor:crosshair"/>';
+    svg.innerHTML=g;
+    var hit=svg.querySelector("#hit"),xh=svg.querySelector("#xh"),tip=$("#tip"),box=$("#chartBox");
+    function move(ev){
+      var e=ev.touches?ev.touches[0]:ev,pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;var p=pt.matrixTransform(svg.getScreenCTM().inverse());
+      var i=Math.max(0,Math.min(11,Math.round((p.x-L)/((W-L-Rp)/11))));
+      xh.setAttribute("x1",x(i));xh.setAttribute("x2",x(i));xh.style.visibility="visible";
+      tip.innerHTML="<b>Mes "+A[i].m+"</b> · "+A[i].occ+" residentes nuevos<div class='r'><span><i style='background:#1F6FB8'></i>Acumulado con A</span><b>"+money(A[i].acc)+"</b></div><div class='r'><span><i style='background:#D0558A'></i>Acumulado con B</span><b>"+money(B[i].acc)+"</b></div>";
+      tip.hidden=false;var bw=box.clientWidth,sx=x(i)/W*bw,tw=tip.offsetWidth,left=sx+14;if(left+tw>bw)left=sx-tw-14;if(left<0)left=0;tip.style.left=left+"px";tip.style.top="6px";
+    }
+    function leave(){xh.style.visibility="hidden";tip.hidden=true}
+    hit.addEventListener("mousemove",move);hit.addEventListener("mouseleave",leave);hit.addEventListener("touchstart",move,{passive:true});hit.addEventListener("touchmove",move,{passive:true});hit.addEventListener("touchend",leave);
+  }
+  render();
+
+  /* copiar */
+  document.querySelectorAll(".copy").forEach(function(b){b.addEventListener("click",function(){
+    var el=document.getElementById(b.dataset.copy),t=el.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Seleccionado"}
+    try{navigator.clipboard.writeText(t).then(function(){b.textContent="Copiado";setTimeout(function(){b.textContent="Copiar"},1600)},sel)}catch(e){sel()}
+  })});
+
+  /* formulario */
+  var form=$("#leadForm"),step=1;
+  var steps=[].slice.call(form.querySelectorAll("fieldset"));
+  var progs=[].slice.call(form.querySelectorAll(".prog > div"));
+  function go(n){
+    step=n;steps.forEach(function(f){f.hidden=+f.dataset.step!==n});
+    progs.forEach(function(p,i){p.classList.toggle("on",i<n)});
+    $("#back").hidden=n===1;$("#next").hidden=n===3;$("#send").hidden=n!==3;
+    form.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+    var first=steps[n-1].querySelector("input,select");if(first)setTimeout(function(){first.focus({preventScroll:true})},250);
+  }
+  function mark(q,msg){q.classList.add("bad");if(!q.querySelector(".err")){var e=document.createElement("span");e.className="err";e.textContent=msg;q.appendChild(e)}}
+  function clear(q){q.classList.remove("bad");var e=q.querySelector(".err");if(e)e.remove()}
+  function valid(n){
+    var ok=true,fs=steps[n-1];
+    fs.querySelectorAll(".q").forEach(clear);
+    fs.querySelectorAll("input[required]:not([type=radio]),select[required]").forEach(function(el){
+      var q=el.closest(".q");if(!String(el.value).trim()){mark(q,"Complete este dato para continuar.");ok=false}
+      else if(el.type==="tel"&&String(el.value).replace(/\D/g,"").length<8){mark(q,"Revise el número: debe tener al menos 8 dígitos.");ok=false}
+    });
+    if(n===1){var t=+$("#f_tot").value,l=+$("#f_lib").value;if(t&&l>t){mark($("#f_lib").closest(".q"),"Las plazas libres no pueden ser más que el total.");ok=false}}
+    if(n===2){var c=fs.querySelector("[data-group=casos]");if(!fs.querySelector("input[name=casos]:checked")){mark(c,"Marque al menos una opción.");ok=false}}
+    if(n===3){var cg=fs.querySelector("[data-group=cargo]");if(!fs.querySelector("input[name=cargo]:checked")){mark(cg,"Elija una opción.");ok=false}
+      var em=$("#f_mail");if(em.value&&!/^\S+@\S+\.\S+$/.test(em.value)){mark(em.closest(".q"),"Revise el correo.");ok=false}}
+    if(!ok){var b=fs.querySelector(".bad input,.bad select");if(b)b.focus()}
+    return ok;
+  }
+  form.addEventListener("input",function(e){var q=e.target.closest(".q");if(q&&q.classList.contains("bad"))clear(q)});
+  $("#next").addEventListener("click",function(){if(valid(step))go(step+1)});
+  $("#back").addEventListener("click",function(){go(step-1)});
+  function data(){
+    var fd=new FormData(form),o={};
+    fd.forEach(function(v,k){if(o[k]){o[k]=[].concat(o[k],v)}else{o[k]=v}});
+    ["casos","origen"].forEach(function(k){if(Array.isArray(o[k]))o[k]=o[k].join(", ")});
+    o.pagina=location.href.split("#")[0];
+    return o;
+  }
+  function waText(o){
+    return encodeURIComponent("Hola Ilan, completé el formulario de Numet para residencias:")+"%0A"+
+      ["Residencia: "+o.residencia,"Localidad: "+o.localidad,"Plazas: "+o.plazas_total+" en total, "+o.plazas_libres+" libres","Cuota: "+o.cuota,"Casos: "+(o.casos||"-"),"Cómo llegan hoy: "+(o.origen||"-"),"Publicidad hoy: "+(o.publicidad||"-"),"Nombre: "+o.nombre+" ("+o.cargo+")","WhatsApp: "+o.whatsapp,"Correo: "+(o.email||"-"),"Horario: "+(o.horario||"-")].map(encodeURIComponent).join("%0A");
+  }
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    if(!valid(3))return;
+    var o=data(),btn=$("#send");
+    if(o.website){return}
+    btn.disabled=true;btn.textContent="Enviando…";
+    function finish(ok){
+      steps.forEach(function(f){f.hidden=true});$("#formNav").hidden=true;form.querySelector(".prog").hidden=true;
+      if(ok){$("#done").hidden=false}else{$("#waLink").href="https://wa.me/"+WA+"?text="+waText(o);$("#fallback").hidden=false}
+      form.scrollIntoView({block:"start"});
+    }
+    var ctrl=typeof AbortController!=="undefined"?new AbortController():null;var to=setTimeout(function(){if(ctrl)ctrl.abort()},12000);
+    fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(o),signal:ctrl?ctrl.signal:undefined})
+      .then(function(r){clearTimeout(to);finish(r.ok)})
+      .catch(function(){clearTimeout(to);finish(false)});
+  });
+})();
+</script>
+</body>
+</html>
